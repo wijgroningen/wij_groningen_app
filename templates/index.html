@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Welkom bij de Trajecten Applicatie</h2>
+    <p>Deze applicatie helpt bij het beheren van trajecten voor inwoners en teams.</p>
+
+    <h3>Acties</h3>
+    <ul>
+        <li><a href="{{ url_for('routes.new_traject') }}">Nieuw Traject Aanmaken</a></li>
+        <li><a href="#">Bekijk Alle Trajecten</a></li>
+        <li><a href="#">Bekijk Inwoners</a></li>
+        <li><a href="#">Bekijk Werknemers</a></li>
+    </ul>
+
+    <h3>Actuele Trajecten</h3>
+    <ul>
+        {% if trajecten %}
+            {% for traject in trajecten %}
+                <li>
+                    <strong>Status:</strong> {{ traject.status }} <br>
+                    <strong>Trajectsoort:</strong> {{ traject.trajectsoort }} <br>
+                    <strong>Inwoner BSN:</strong> {{ traject.inwoner.bsn }} <br>
+                    <strong>Casushouder:</strong> {{ traject.casushouder.achternaam }}, {{ traject.casushouder.voornaam }} <br>
+                    <strong>Team:</strong> {{ traject.team.naam }} <br>
+                </li>
+            {% endfor %}
+        {% else %}
+            <li>Er zijn geen trajecten gevonden.</li>
+        {% endif %}
+    </ul>
+{% endblock %}
