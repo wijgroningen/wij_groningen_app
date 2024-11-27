@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="form-header">Nieuw Traject</h2>
+<form method="POST" class="styled-form">
+    <div class="form-group">
+        <label for="bsn">Inwoner (BSN):</label>
+        <input type="text" id="bsn" name="bsn" required>
+    </div>
+
+    <div class="form-group">
+        <label for="trajectsoort">Trajectsoort:</label>
+        <select id="trajectsoort" name="trajectsoort">
+            <option value="Jeugd">Jeugd</option>
+            <option value="Volwassenen">Volwassenen</option>
+            <option value="Basis jeugdhulp">Basis jeugdhulp</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="status">Status:</label>
+        <select id="status_id" name="status_id">
+            {% for status in statussen %}
+            <option value="{{ status.id }}">{{ status.naam }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="casushouder_id">Casushouder:</label>
+        <select id="casushouder_id" name="casushouder_id">
+            {% for werknemer in werknemers %}
+            <option value="{{ werknemer.id }}">{{ werknemer.achternaam }}, {{ werknemer.voornaam }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="team_id">Team:</label>
+        <select id="team_id" name="team_id">
+            {% for team in teams %}
+            <option value="{{ team.id }}">{{ team.naam }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <h3>Toewijzingen</h3>
+    <div id="toewijzingen-container">
+        <div class="dynamic-form-group">
+            <input type="text" name="toewijzing_product[]" placeholder="Product" required>
+            <input type="date" name="toewijzing_startdatum[]" required>
+            <input type="date" name="toewijzing_einddatum[]">
+            <button type="button" class="btn-secondary" onclick="removeField(this)">-</button>
+        </div>
+    </div>
+    <button type="button" id="add-toewijzing" class="btn-secondary">+ Voeg Toewijzing Toe</button>
+
+    <button type="submit" class="btn-primary">Opslaan</button>
+</form>
+
+<script>
+    document.getElementById('add-toewijzing').addEventListener('click', function () {
+        const container = document.getElementById('toewijzingen-container');
+        const newField = `
+            <div class="dynamic-form-group">
+                <input type="text" name="toewijzing_product[]" placeholder="Product" required>
+                <input type="date" name="toewijzing_startdatum[]" required>
+                <input type="date" name="toewijzing_einddatum[]">
+                <button type="button" class="btn-secondary" onclick="removeField(this)">-</button>
+            </div>`;
+        container.insertAdjacentHTML('beforeend', newField);
+    });
+
+    function removeField(button) {
+        button.parentElement.remove();
+    }
+</script>
+
+{% endblock %}

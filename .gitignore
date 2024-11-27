@@ -1,0 +1,17 @@
+
+# folders
+/.venv
+/__pycache__
+/instance
+/documents
+documentation/
+
+# files
+add_data_to_db.py
+config.py
+db.sqlite3
+static/favicon.ico
+static/wij_groningen_logo_1.png
+
+# log files
+*.log

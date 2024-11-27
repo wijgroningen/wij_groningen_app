@@ -1,0 +1,610 @@
+/* Algemene stijlen */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #D4DBD3; /* Lichte neutrale achtergrondkleur */
+    margin: 0;
+    padding: 0;
+    color: #2D386D; /* Donkere tekstkleur */
+}
+/* Gebruikersmenu */
+/* User menu styling */
+.user-menu {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.user-menu-toggle {
+    background-color: #E15011;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.user-menu-toggle:hover {
+    background-color: #FF6700;
+}
+
+.user-menu-content {
+    display: none; /* Verborgen standaard */
+    background-color: #2D386D;
+    border: 1px solid #E15011;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.user-menu-content.visible {
+    display: block; /* Zichtbaar bij klik */
+}
+
+.user-menu-content a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    margin: 5px 0;
+}
+
+.user-menu-content a:hover {
+    color: #E15011;
+}
+
+/* Header */
+header {
+    background-color: #009E4D; /* Groen */
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+header nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+header nav a:hover {
+    text-decoration: underline;
+}
+
+/* Secties */
+section {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 800px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Actieslijst */
+.actions-list {
+    list-style: none;
+    padding: 0;
+}
+
+.actions-list li {
+    margin-bottom: 10px;
+}
+
+.actions-list a {
+    color: #E15011; /* Oranje */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.actions-list a:hover {
+    color: #EEA40A; /* Gele tint */
+}
+
+/* Formulier */
+.filter-section form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+select, button {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+select:focus {
+    border-color: #4D245E; /* Paars */
+    outline: none;
+}
+
+.btn-primary {
+    background-color: #009E4D;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #00783A;
+}
+
+/* casusenlijst */
+.casusen-lijst {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.casus-item {
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.casus-item:hover {
+    background-color: #E86B99; /* Roze tint */
+    color: #ffffff; /* Witte tekst */
+}
+
+.casus-item:hover .collapsible-content {
+    background-color: #ffffff; /* Zorg voor een witte achtergrond */
+    color: #2D386D; /* Donkere tekstkleur */
+}
+
+
+.casus-item ul {
+    color: inherit; /* Erf de kleur van de hover */
+}
+
+/* Algemene instellingen voor formulieren */
+.styled-form {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Stijlen voor kop */
+.form-header {
+    text-align: center;
+    color: #2D386D;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+/* Formulier groepen */
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #4D245E;
+}
+
+input, select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+input:focus, select:focus {
+    border-color: #009E4D;
+    outline: none;
+}
+
+/* Knoppen */
+.btn-primary {
+    background-color: #E15011;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background-color: #EEA40A;
+}
+/* Layout voor main content en filter */
+.main-layout {
+    display: flex;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Content sectie */
+.content-section {
+    flex: 3;
+}
+
+/* Filter sectie */
+.filter-section {
+    flex: 1;
+    position: sticky;
+    top: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Formulieren in de filter sectie */
+.filter-section .form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-section label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #4D245E;
+}
+
+.filter-section select,
+.filter-section button {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.filter-section select:focus,
+.filter-section button:focus {
+    border-color: #009E4D;
+    outline: none;
+}
+
+.filter-section .btn-primary {
+    margin-top: 10px;
+    background-color: #E15011;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 15px;
+}
+
+.filter-section .btn-primary:hover {
+    background-color: #EEA40A;
+}
+
+/* Acties en casusenlijst */
+.actions-list,
+.casusen-lijst {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.actions-list li,
+.casusen-lijst li {
+    margin-bottom: 10px;
+}
+
+.actions-list a,
+.casusen-lijst a {
+    color: #4D245E;
+    text-decoration: none;
+}
+
+.actions-list a:hover,
+.casusen-lijst a:hover {
+    color: #E86B99;
+}
+/* Wachtwoord wijzigen sectie */
+.change-password-section {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.change-password-section h2 {
+    text-align: center;
+    color: #2D386D;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.change-password-form .form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.change-password-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #4D245E;
+}
+
+.change-password-form input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.change-password-form input:focus {
+    border-color: #009E4D;
+    outline: none;
+}
+
+.change-password-form .btn-primary {
+    margin-top: 10px;
+    background-color: #E15011;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.change-password-form .btn-primary:hover {
+    background-color: #EEA40A;
+}
+/* Login sectie */
+.login-section {
+    max-width: 400px;
+    margin: 50px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.login-section h2 {
+    text-align: center;
+    color: #2D386D;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+/* Flash messages */
+.flash-messages {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+
+.flash-messages li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: white;
+}
+
+.flash-messages li.success {
+    background-color: #009E4D;
+}
+
+.flash-messages li.error,
+.flash-messages li.danger {
+    background-color: #E15011;
+}
+
+.flash-messages li.info {
+    background-color: #2D386D;
+}
+
+/* Login formulier */
+.login-form .form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #4D245E;
+}
+
+.login-form input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.login-form input:focus {
+    border-color: #009E4D;
+    outline: none;
+}
+
+.login-form .btn-primary {
+    margin-top: 10px;
+    background-color: #E15011;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.login-form .btn-primary:hover {
+    background-color: #EEA40A;
+}
+/* Collapsible secties */
+.collapsible {
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    font-weight: bold;
+    color: #4D245E;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.collapsible:hover {
+    background-color: #E86B99;
+    color: white;
+}
+
+.collapsible:after {
+    content: '\25bc'; /* Pijl naar beneden */
+    font-size: 12px;
+    float: right;
+    margin-left: 5px;
+}
+
+.collapsible.active:after {
+    content: '\25b2'; /* Pijl naar boven */
+}
+
+
+.collapsible-content {
+    display: none; /* Standaard verborgen */
+    padding: 10px 15px;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+    color: #2D386D;
+}
+
+.collapsible-content ul li {
+    color: inherit; /* Gebruik de geërfde tekstkleur */
+}
+
+.collapsible-content:hover {
+    background-color: #f9f9f9; /* Lichtgrijze achtergrond bij hover */
+    color: #2D386D; /* Donkere tekst blijft leesbaar */
+}
+
+
+
+/* .collapsible-content {
+    display: none;
+    padding: 10px 15px;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+} */
+
+.collapsible-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+/* Dynamische formuliergroep */
+.dynamic-form-group {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+.dynamic-form-group input {
+    flex: 1;
+}
+
+.dynamic-form-group button {
+    background-color: #E15011;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.dynamic-form-group button:hover {
+    background-color: #EEA40A;
+}
+@media (max-width: 768px) {
+    .main-layout {
+        flex-direction: column;
+    }
+
+    .filter-section {
+        position: relative;
+        top: 0;
+    }
+
+    .content-section,
+    .filter-section {
+        flex: 1;
+    }
+}
+/* Header container styling */
+/* Header container styling */
+.header-container {
+    display: flex;
+    justify-content: flex-start; /* Zorgt ervoor dat items links beginnen */
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #009E4D; /* Groene kleur */
+    color: white;
+    height: 60px; /* Uniforme hoogte voor de balk */
+}
+
+/* Logo styling */
+.logo-container {
+    margin-right: 20px; /* Ruimte tussen logo en menu-items */
+}
+
+.logo {
+    max-height: 80px; /* Grotere logo-afmeting */
+    max-width: 200px; /* Schaal omhoog naar gewenste grootte */
+    display: inline-block;
+}
+
+/* Navigatie styling */
+.nav-links {
+    display: flex;
+    gap: 15px; /* Ruimte tussen navigatie-items */
+    align-items: center;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #E15011; /* Oranje hover-kleur */
+}
+

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="login-section">
+    <h2>Login</h2>
+    
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <ul class="flash-messages">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Login form -->
+    <form method="POST" action="{{ url_for('routes.login') }}" class="login-form">
+        <div class="form-group">
+            <label for="username">Gebruikersnaam (Achternaam):</label>
+            <input type="text" name="username" id="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Wachtwoord:</label>
+            <input type="password" name="password" id="password" required>
+        </div>
+        <button type="submit" class="btn-primary">Login</button>
+    </form>
+</section>
+{% endblock %}

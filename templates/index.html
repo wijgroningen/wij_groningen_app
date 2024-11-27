@@ -1,31 +1,122 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Welkom bij de Trajecten Applicatie</h2>
-    <p>Deze applicatie helpt bij het beheren van trajecten voor inwoners en teams.</p>
+<div class="main-layout">
+    <div class="content-section">
+        <section class="welcome-section">
+            <h2>Bekijk casussen</h2>
+        </section>
 
-    <h3>Acties</h3>
-    <ul>
-        <li><a href="{{ url_for('routes.new_traject') }}">Nieuw Traject Aanmaken</a></li>
-        <li><a href="#">Bekijk Alle Trajecten</a></li>
-        <li><a href="#">Bekijk Inwoners</a></li>
-        <li><a href="#">Bekijk Werknemers</a></li>
-    </ul>
+        <!-- <section class="actions-section">
+            <h3>Acties</h3>
+            <ul class="actions-list">
+                <li><a href="{{ url_for('routes.new_casus') }}">Nieuw casus Aanmaken</a></li>
+                <li><a href="#">Bekijk Alle casusen</a></li>
+            </ul>
+        </section> -->
 
-    <h3>Actuele Trajecten</h3>
-    <ul>
-        {% if trajecten %}
-            {% for traject in trajecten %}
-                <li>
-                    <strong>Status:</strong> {{ traject.status }} <br>
-                    <strong>Trajectsoort:</strong> {{ traject.trajectsoort }} <br>
-                    <strong>Inwoner BSN:</strong> {{ traject.inwoner.bsn }} <br>
-                    <strong>Casushouder:</strong> {{ traject.casushouder.achternaam }}, {{ traject.casushouder.voornaam }} <br>
-                    <strong>Team:</strong> {{ traject.team.naam }} <br>
-                </li>
-            {% endfor %}
-        {% else %}
-            <li>Er zijn geen trajecten gevonden.</li>
-        {% endif %}
-    </ul>
+        <section class="casusen-section">
+            <h3>Openstaande casusen-section</h3>
+            <ul class="casusen-lijst">
+                {% if triagecasusen %}
+                    {% for casus in triagecasusen %}
+                        <li class="casus-item">
+                            <strong>Status:</strong> {{ casus.status.naam }}<br>
+                            <strong>Registratiedatum:</strong> {{ casus.registratiedatum }}<br>
+                            <strong>casussoort:</strong> {{ casus.casussoort }}<br>
+                            <strong>Inwoner BSN:</strong> {{ casus.inwoner.bsn }}<br>
+                            <strong>Casushouder:</strong> {{ casus.casushouder.achternaam }}, {{ casus.casushouder.voornaam }}<br>
+                            <strong>Team:</strong> {{ casus.team.naam }}<br>
+            wat
+                            <!-- Collapsible sectie -->
+                            <button class="collapsible">Toewijzingen ({{ casus.toewijzingen|length }})</button>
+                            <div class="collapsible-content">
+                                <ul>
+                                    {% for toewijzing in casus.toewijzingen %}
+                                        <li>
+                                            <strong>Product:</strong> {{ toewijzing.product }}<br>
+                                            <strong>Startdatum:</strong> {{ toewijzing.startdatum }}<br>
+                                            <strong>Einddatum:</strong> {{ toewijzing.einddatum or 'N.v.t.' }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li>Er zijn geen casusen gevonden.</li>
+                {% endif %}
+            </ul>
+        </section>
+    </div>
+
+    <aside class="filter-section">
+        <h3>Filter casusen</h3>
+        <form method="GET" action="{{ url_for('routes.home') }}">
+            <div class="form-group">
+                <label for="casussoort">casussoort:</label>
+                <select name="casussoort" id="casussoort">
+                    <option value="">--Alle soorten--</option>
+                    {% for soort in casussoorten %}
+                        <option value="{{ soort }}" {% if request.args.get('casussoort') == soort %}selected{% endif %}>
+                            {{ soort }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="casusstatus">casus status:</label>
+                <select name="casusstatus" id="casusstatus">
+                    <option value="">--Alle soorten--</option>
+                    {% for status in casusstatussen %}
+                        <option value="{{ status.id }}" {% if request.args.get('casusstatus') == soort %}selected{% endif %}>
+                            {{ status.naam }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="casushouder">Casushouder:</label>
+                <select name="casushouder" id="casushouder">
+                    <option value="">--Alle casushouders--</option>
+                    {% for casushouder in casushouders %}
+                        <option value="{{ casushouder.id }}" {% if request.args.get('casushouder') == casushouder.id %}selected{% endif %}>
+                            {{ casushouder.voornaam }} {{ casushouder.achternaam }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="team">Team:</label>
+                <select name="team" id="team">
+                    <option value="">--Alle teams--</option>
+                    {% for team in teams %}
+                        <option value="{{ team.id }}" {% if request.args.get('team') == team.id %}selected{% endif %}>
+                            {{ team.naam }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn-primary">Filter</button>
+        </form>
+    </aside>
+</div>
+
+<script>
+    const collapsibles = document.querySelectorAll('.collapsible');
+    collapsibles.forEach(button => {
+        button.addEventListener('click', function () {
+            this.classList.toggle('active');
+            const content = this.nextElementSibling;
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+            } else {
+                content.style.display = 'block';
+            }
+        });
+    });
+</script>
+
 {% endblock %}

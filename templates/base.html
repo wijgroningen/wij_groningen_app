@@ -2,19 +2,47 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>WIJ Groningen App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://wij.groningen.nl/wp-content/themes/wijgroningen/assets/favicon/favicon.png">
+    <title>WIJ Groningen casus management</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
-        <h1>WIJ Groningen Traject Management</h1>
-        <nav>
-            <a href="{{ url_for('routes.home') }}">Home</a>
-            <a href="{{ url_for('routes.new_traject') }}">Nieuw Traject</a>
-        </nav>
+        <div class="header-container">
+            <!-- Logo aan de linkerzijde -->
+            <div class="logo-container">
+                <a href="{{ url_for('routes.home') }}">
+                <img src="{{ url_for('static', filename='wij_groningen_logo_1.png') }}" alt="WIJ Groningen Logo" class="logo">
+                </a>
+            </div>
+    
+            <!-- Navigatieknoppen direct naast het logo -->
+            <nav class="nav-links">
+                <a href="{{ url_for('routes.new_casus') }}">Nieuwe casus</a>
+                <a href="{{ url_for('routes.pending_changes') }}">Wijzigingen</a>
+            </nav>
+        </div>
     </header>
+    
+    <aside class="user-menu">
+        <button class="user-menu-toggle">☰ Menu</button>
+        <div class="user-menu-content">
+            <a href="{{ url_for('routes.change_password') }}">Wachtwoord Wijzigen</a>
+            <a href="{{ url_for('routes.logout') }}">Uitloggen</a>
+        </div>
+    </aside>
+    
+
     <main>
         {% block content %}{% endblock %}
     </main>
+
+    <script>
+        document.querySelector('.user-menu-toggle').addEventListener('click', function () {
+            const menu = document.querySelector('.user-menu-content');
+            menu.classList.toggle('visible');
+        });
+    </script>
 </body>
 </html>
