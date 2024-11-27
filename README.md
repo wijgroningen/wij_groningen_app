@@ -1,7 +1,7 @@
 # Introduction
 
-Many organisation decide to buy standerdized software because developing and maintaining something this themselves is expensive and in many cases organisation lack the required programming skills.
-The result is that in many cases the software is nog optimized for the goal it trying to achieve. Preferably the customer, in this case the application user, is ....
+Many organisation decide to buy standerdized software because developing and maintaining something this themselves is expensive and very often organisation lack the required programming skills.
+The result is that in many cases the software is nog optimized for the goal it is trying to achieve. Preferably software is written specifically for the customer, in this case the application user.
 
 ChatGPT could make a difference here. 
 
