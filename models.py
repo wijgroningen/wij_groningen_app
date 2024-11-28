@@ -58,7 +58,6 @@ class Werknemer(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-
 class Functie(db.Model):
     __tablename__ = 'functie' 
     id = db.Column(db.Integer, primary_key=True)
@@ -92,11 +91,17 @@ class Status(db.Model):
     def __repr__(self):
         return f"<Status {self.naam}>"
 
-class CasusSoort(db.Model):
-    __tablename__ = 'casussoort'  # Correcte tabelnaam
+class MelderSoort(db.Model):
+    __tablename__ = 'meldersoort'  
     id = db.Column(db.Integer, primary_key=True)
     naam = db.Column(db.String(50), nullable=False)
-    omschrijving = db.Column(db.String(50), nullable=True)
+    omschrijving = db.Column(db.String(100), nullable=True)
+    
+class CasusSoort(db.Model):
+    __tablename__ = 'casussoort'  
+    id = db.Column(db.Integer, primary_key=True)
+    naam = db.Column(db.String(50), nullable=False)
+    omschrijving = db.Column(db.String(100), nullable=True)
 
 class InternProduct(db.Model):
     __tablename__ = 'internproduct' 
@@ -122,15 +127,34 @@ class Casus(db.Model):
     __tablename__ = 'casus' 
     id = db.Column(db.Integer, primary_key=True)
     registratiedatum = db.Column(db.Date, default=datetime.utcnow)
-    casus_naam = db.Column(db.String(80), nullable=False)
+    casus_naam = db.Column(db.String(255), nullable=True)  # Casusnaam optioneel
     einde_wettelijke_termijn = db.Column(db.Date, nullable=True)
     geregistreerd_door = db.Column(db.Integer, db.ForeignKey('werknemer.id'), nullable=True)
-    soort_id = db.Column(db.Integer, db.ForeignKey('casussoort.id'), nullable=True)  # Correcte verwijzing
+    casussoort_id = db.Column(db.Integer, db.ForeignKey('casussoort.id'), nullable=True)
     status_id = db.Column(db.Integer, db.ForeignKey('status.id'), nullable=False)
     inwoner_id = db.Column(db.Integer, db.ForeignKey('inwoner.id'), nullable=False)
+    meldersoort_id = db.Column(db.Integer, db.ForeignKey('meldersoort.id'), nullable=False)
     casushouder_id = db.Column(db.Integer, db.ForeignKey('werknemer.id'), nullable=True)
     tweede_casushouder_id = db.Column(db.Integer, db.ForeignKey('werknemer.id'), nullable=True)
     team_id = db.Column(db.Integer, db.ForeignKey('team.id'), nullable=False)
-    soort = db.relationship('CasusSoort', backref='casussen', lazy=True)
+    soort = db.relationship('CasusSoort', backref='casussen', lazy=True)    
     interne_inzet = db.relationship('InterneInzet', backref='casus', lazy=True)
+    toelichting = db.Column(db.Text, nullable=True)
 
+# class Casus(db.Model):
+#     __tablename__ = 'casus' 
+#     id = db.Column(db.Integer, primary_key=True)
+#     registratiedatum = db.Column(db.Date, default=datetime.utcnow)
+#     casus_naam = db.Column(db.String(80), nullable=False)
+#     einde_wettelijke_termijn = db.Column(db.Date, nullable=True)
+#     geregistreerd_door = db.Column(db.Integer, db.ForeignKey('werknemer.id'), nullable=True)
+#     casussoort_id = db.Column(db.Integer, db.ForeignKey('casussoort.id'), nullable=True)  # Correcte verwijzing
+#     status_id = db.Column(db.Integer, db.ForeignKey('status.id'), nullable=False)
+#     inwoner_id = db.Column(db.Integer, db.ForeignKey('inwoner.id'), nullable=False)
+#     meldersoort_id = db.Column(db.Integer, db.ForeignKey('meldersoort.id'), nullable=False)
+#     casushouder_id = db.Column(db.Integer, db.ForeignKey('werknemer.id'), nullable=True)
+#     tweede_casushouder_id = db.Column(db.Integer, db.ForeignKey('werknemer.id'), nullable=True)
+#     team_id = db.Column(db.Integer, db.ForeignKey('team.id'), nullable=False)
+#     soort = db.relationship('CasusSoort', backref='casussen', lazy=True)
+#     interne_inzet = db.relationship('InterneInzet', backref='casus', lazy=True)
+#     toelichting = db.Column(db.Text, nullable=True)

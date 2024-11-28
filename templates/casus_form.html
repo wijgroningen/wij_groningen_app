@@ -3,17 +3,36 @@
 {% block content %}
 <h2 class="form-header">Nieuw Traject</h2>
 <form method="POST" class="styled-form">
+    <!-- Zoek Inwoner -->
     <div class="form-group">
-        <label for="bsn">Inwoner (BSN):</label>
-        <input type="text" id="bsn" name="bsn" required>
+        <label for="zoek_inwoner">Zoek Inwoner:</label>
+        <input type="text" id="zoek_inwoner" name="zoek_inwoner" placeholder="BSN of achternaam" oninput="zoekInwoner()" required>
+        <select id="inwoner_id" name="inwoner_id" required>
+            <option value="">Selecteer een inwoner</option>
+        </select>
+    </div>
+
+    <!-- Overige velden -->
+    <div class="form-group">
+        <label for="meldersoort_id">Melder soort:</label>
+        <select id="meldersoort_id" name="meldersoort_id">
+            {% for meldersoort in meldersoorten %}
+            <option value="{{ meldersoort.id }}">{{ meldersoort.naam }}</option>
+            {% endfor %}
+        </select>
     </div>
 
     <div class="form-group">
-        <label for="trajectsoort">Trajectsoort:</label>
-        <select id="trajectsoort" name="trajectsoort">
-            <option value="Jeugd">Jeugd</option>
-            <option value="Volwassenen">Volwassenen</option>
-            <option value="Basis jeugdhulp">Basis jeugdhulp</option>
+        <label for="casus_naam">Casusnaam:</label>
+        <input type="text" id="casus_naam" name="casus_naam" placeholder="Automatisch gegenereerd indien leeg">
+    </div>
+
+    <div class="form-group">
+        <label for="casussoort_id">Casus soort:</label>
+        <select id="casussoort_id" name="casussoort_id">
+            {% for casussoort in casussoorten %}
+            <option value="{{ casussoort.id }}">{{ casussoort.naam }}</option>
+            {% endfor %}
         </select>
     </div>
 
@@ -36,6 +55,16 @@
     </div>
 
     <div class="form-group">
+        <label for="tweede_casushouder_id">Tweede Casushouder (Optioneel):</label>
+        <select id="tweede_casushouder_id" name="tweede_casushouder_id">
+            <option value="">Geen</option>
+            {% for werknemer in werknemers %}
+            <option value="{{ werknemer.id }}">{{ werknemer.achternaam }}, {{ werknemer.voornaam }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
         <label for="team_id">Team:</label>
         <select id="team_id" name="team_id">
             {% for team in teams %}
@@ -44,17 +73,29 @@
         </select>
     </div>
 
+    <div class="form-group">
+        <label for="toelichting">Toelichting:</label>
+        <textarea id="toelichting" name="toelichting" rows="4" placeholder="Optioneel"></textarea>
+    </div>
+
+    <!-- Toewijzingen -->
     <h3>Toewijzingen</h3>
     <div id="toewijzingen-container">
         <div class="dynamic-form-group">
             <input type="text" name="toewijzing_product[]" placeholder="Product" required>
             <input type="date" name="toewijzing_startdatum[]" required>
             <input type="date" name="toewijzing_einddatum[]">
+            <select name="toewijzing_status[]" required>
+                {% for status in statussen %}
+                <option value="{{ status.id }}">{{ status.naam }}</option>
+                {% endfor %}
+            </select>
             <button type="button" class="btn-secondary" onclick="removeField(this)">-</button>
         </div>
     </div>
     <button type="button" id="add-toewijzing" class="btn-secondary">+ Voeg Toewijzing Toe</button>
 
+    <!-- Opslaan knop -->
     <button type="submit" class="btn-primary">Opslaan</button>
 </form>
 
@@ -66,6 +107,11 @@
                 <input type="text" name="toewijzing_product[]" placeholder="Product" required>
                 <input type="date" name="toewijzing_startdatum[]" required>
                 <input type="date" name="toewijzing_einddatum[]">
+                <select name="toewijzing_status[]" required>
+                    {% for status in statussen %}
+                    <option value="{{ status.id }}">{{ status.naam }}</option>
+                    {% endfor %}
+                </select>
                 <button type="button" class="btn-secondary" onclick="removeField(this)">-</button>
             </div>`;
         container.insertAdjacentHTML('beforeend', newField);
@@ -73,6 +119,22 @@
 
     function removeField(button) {
         button.parentElement.remove();
+    }
+
+    function zoekInwoner() {
+        const zoekterm = document.getElementById('zoek_inwoner').value;
+        const dropdown = document.getElementById('inwoner_id');
+        
+        if (zoekterm.length > 2) { // Zoek pas na 3 karakters
+            fetch(`/zoek_inwoner?zoekterm=${encodeURIComponent(zoekterm)}`)
+                .then(response => response.json())
+                .then(data => {
+                    dropdown.innerHTML = '<option value="">Selecteer een inwoner</option>';
+                    data.forEach(inwoner => {
+                        dropdown.innerHTML += `<option value="${inwoner.id}">${inwoner.bsn} - ${inwoner.achternaam}, ${inwoner.voornaam}</option>`;
+                    });
+                });
+        }
     }
 </script>
 

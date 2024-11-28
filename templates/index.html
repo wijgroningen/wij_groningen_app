@@ -4,7 +4,7 @@
 <div class="main-layout">
     <div class="content-section">
         <section class="welcome-section">
-            <h2>Bekijk casussen</h2>
+            <h2>Bekijk caseload</h2>
         </section>
 
         <!-- <section class="actions-section">
@@ -16,14 +16,14 @@
         </section> -->
 
         <section class="casusen-section">
-            <h3>Openstaande casusen-section</h3>
+            <h3>Openstaande casussen</h3>
             <ul class="casusen-lijst">
                 {% if triagecasusen %}
                     {% for casus in triagecasusen %}
                         <li class="casus-item">
                             <strong>Status:</strong> {{ casus.status.naam }}<br>
                             <strong>Registratiedatum:</strong> {{ casus.registratiedatum }}<br>
-                            <strong>casussoort:</strong> {{ casus.casussoort }}<br>
+                            <strong>casussoort:</strong> {{ casus.soort.naam }}<br>
                             <strong>Inwoner BSN:</strong> {{ casus.inwoner.bsn }}<br>
                             <strong>Casushouder:</strong> {{ casus.casushouder.achternaam }}, {{ casus.casushouder.voornaam }}<br>
                             <strong>Team:</strong> {{ casus.team.naam }}<br>
@@ -44,7 +44,7 @@
                         </li>
                     {% endfor %}
                 {% else %}
-                    <li>Er zijn geen casusen gevonden.</li>
+                    <li>Er zijn geen casussen gevonden.</li>
                 {% endif %}
             </ul>
         </section>
