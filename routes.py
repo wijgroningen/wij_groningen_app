@@ -3,7 +3,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_login import login_required, current_user, login_user, logout_user
 from models import db, Inwoner, Casus, Werknemer, Team, InterneInzet, InternProduct, Status, MelderSoort, CasusSoort
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # Define the blueprint
 routes_blueprint = Blueprint('routes', __name__)
@@ -82,15 +82,16 @@ def home():
 @routes_blueprint.route('/Casus/new', methods=['GET', 'POST'])
 def new_casus():
     if request.method == 'POST':
+        # Velden ophalen uit het formulier
         status_id = request.form['status_id']
         meldersoort_id = request.form['meldersoort_id']
         casussoort_id = request.form['casussoort_id']
-        inwoner_id = request.form['inwoner_id']  # Correct veld gebruiken
+        inwoner_id = request.form['inwoner_id']
         casushouder_id = request.form['casushouder_id']
+        tweede_casushouder_id = request.form.get('tweede_casushouder_id')  # Optioneel veld
         team_id = request.form['team_id']
         casus_naam = request.form.get('casus_naam')  # Optioneel veld
         toelichting = request.form.get('toelichting')  # Optioneel veld
-        tweede_casushouder_id = request.form.get('tweede_casushouder_id')
 
         # Controleer of de inwoner bestaat
         inwoner = Inwoner.query.get(inwoner_id)
@@ -101,8 +102,12 @@ def new_casus():
         # Automatische naamgeving indien casus_naam leeg is
         if not casus_naam:
             casussoort = CasusSoort.query.get(casussoort_id)
-            registratiedatum = datetime.utcnow().strftime('%Y-%m-%d')
-            casus_naam = f"{inwoner.achternaam} - {casussoort.naam} - {registratiedatum}"
+            registratiedatum = datetime.utcnow()
+            casus_naam = f"{inwoner.achternaam} - {casussoort.naam} - {registratiedatum.strftime('%Y-%m-%d')}"
+
+        # Bereken einde wettelijke termijn (registratiedatum + 42 dagen)
+        registratiedatum = datetime.utcnow()
+        einde_wettelijke_termijn = registratiedatum + timedelta(days=42)
 
         # Maak een nieuw Casus
         nieuwe_casus = Casus(
@@ -114,7 +119,10 @@ def new_casus():
             tweede_casushouder_id=tweede_casushouder_id,
             team_id=team_id,
             casus_naam=casus_naam,
-            toelichting=toelichting
+            toelichting=toelichting,
+            geregistreerd_door_id=current_user.id,  # ID van de ingelogde gebruiker
+            registratiedatum=registratiedatum,
+            einde_wettelijke_termijn=einde_wettelijke_termijn
         )
         db.session.add(nieuwe_casus)
         db.session.commit()
@@ -145,6 +153,7 @@ def new_casus():
         flash('Nieuwe casus succesvol opgeslagen.', 'success')
         return redirect(url_for('routes.home'))
 
+    # Data ophalen voor het formulier
     statussen = Status.query.all()
     casussoorten = CasusSoort.query.all()
     meldersoorten = MelderSoort.query.all()
@@ -179,66 +188,6 @@ def zoek_inwoner():
         'voornaam': inwoner.voornaam,
         'achternaam': inwoner.achternaam
     } for inwoner in inwoners])
-
-# @routes_blueprint.route('/Casus/new', methods=['GET', 'POST'])
-# def new_casus():
-#     if request.method == 'POST':
-#         status_id = request.form['status_id']
-#         meldersoort_id = request.form['meldersoort_id']
-#         casussoort_id = request.form['casussoort_id']
-#         bsn = request.form['bsn']
-#         casushouder_id = request.form['casushouder_id']
-#         team_id = request.form['team_id']
-
-#         # Haal of maak de inwoner
-#         inwoner = Inwoner.query.filter_by(bsn=bsn).first()
-#         if not inwoner:
-#             inwoner = Inwoner(bsn=bsn)
-#             db.session.add(inwoner)
-#             db.session.commit()
-
-#         # Maak een nieuw Casus
-#         Nieuwe_casus = Casus(
-#             status_id=status_id,
-#             casussoort_id=casussoort_id,
-#             meldersoort_id = meldersoort_id,
-#             inwoner_id=inwoner.id,
-#             casushouder_id=casushouder_id,
-#             team_id=team_id
-#         )
-#         db.session.add(Nieuwe_casus)
-#         db.session.commit()
-
-#         # Voeg toewijzingen toe
-#         toewijzing_producten = request.form.getlist('toewijzing_product[]')
-#         toewijzing_startdatums = request.form.getlist('toewijzing_startdatum[]')
-#         toewijzing_einddatums = request.form.getlist('toewijzing_einddatum[]')
-
-#         for product, startdatum, einddatum in zip(toewijzing_producten, toewijzing_startdatums, toewijzing_einddatums):
-#             # Converteer de string naar datetime.date objecten
-#             startdatum_obj = datetime.strptime(startdatum, '%Y-%m-%d').date()
-#             einddatum_obj = datetime.strptime(einddatum, '%Y-%m-%d').date() if einddatum else None
-
-#             toewijzing = InterneInzet(
-#                 product=product,
-#                 startdatum=startdatum_obj,
-#                 einddatum=einddatum_obj,
-#                 Casus_id=Casus.id,
-#                 werknemer_id=casushouder_id
-#             )
-#             db.session.add(toewijzing)
-
-#         db.session.commit()
-#         return redirect(url_for('routes.home'))
-
-#     statussen = Status.query.all()
-#     casussoorten = CasusSoort.query.all()
-#     meldersoorten = MelderSoort.query.all()
-#     werknemers = Werknemer.query.order_by(Werknemer.achternaam).all()
-#     teams = Team.query.all()
-
-#     return render_template('Casus_form.html', statussen=statussen, werknemers=werknemers, teams=teams, meldersoorten=meldersoorten, casussoorten=casussoorten)
-
 
 @routes_blueprint.route('/pending-changes')
 def pending_changes():

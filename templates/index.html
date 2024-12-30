@@ -7,27 +7,23 @@
             <h2>Bekijk caseload</h2>
         </section>
 
-        <!-- <section class="actions-section">
-            <h3>Acties</h3>
-            <ul class="actions-list">
-                <li><a href="{{ url_for('routes.new_casus') }}">Nieuw casus Aanmaken</a></li>
-                <li><a href="#">Bekijk Alle casusen</a></li>
-            </ul>
-        </section> -->
-
         <section class="casusen-section">
             <h3>Openstaande casussen</h3>
             <ul class="casusen-lijst">
-                {% if triagecasusen %}
-                    {% for casus in triagecasusen %}
+                {% if triagecasussen %}
+                    {% for casus in triagecasussen %}
                         <li class="casus-item">
+                            <strong>Naam:</strong> {{ casus.casus_naam }}<br>
                             <strong>Status:</strong> {{ casus.status.naam }}<br>
                             <strong>Registratiedatum:</strong> {{ casus.registratiedatum }}<br>
+                            <strong>Einde wettelijke termijn:</strong> {{ casus.einde_wettelijke_termijn }}<br>
+                            <strong>Geregisteerd door:</strong> {{ casus.geregistreerd_door.voornaam }} {{ casus.geregistreerd_door.achternaam }}<br>
                             <strong>casussoort:</strong> {{ casus.soort.naam }}<br>
                             <strong>Inwoner BSN:</strong> {{ casus.inwoner.bsn }}<br>
-                            <strong>Casushouder:</strong> {{ casus.casushouder.achternaam }}, {{ casus.casushouder.voornaam }}<br>
+                            <strong>Casushouder:</strong> {{ casus.casushouder.voornaam }} {{ casus.casushouder.achternaam }} <br>
+                            <strong>Tweede casushouder:</strong> {{ casus.tweede_casushouder.voornaam }} {{ casus.tweede_casushouder.achternaam }}<br>
                             <strong>Team:</strong> {{ casus.team.naam }}<br>
-            wat
+
                             <!-- Collapsible sectie -->
                             <button class="collapsible">Toewijzingen ({{ casus.toewijzingen|length }})</button>
                             <div class="collapsible-content">

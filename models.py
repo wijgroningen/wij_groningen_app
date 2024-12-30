@@ -14,7 +14,7 @@ class Inwoner(db.Model):
     adres = db.Column(db.String(100), nullable=True)   
     woonplaats = db.Column(db.String(50), nullable=True)    
     geboortedatum = db.Column(db.Date, nullable=True)
-    casussen = db.relationship('Casus', backref='inwoner', lazy=True)
+    # casussen = db.relationship('Casus', backref='inwoner', lazy=True)
 
 class Werknemer(db.Model, UserMixin):
     __tablename__ = 'werknemer' 
@@ -25,30 +25,30 @@ class Werknemer(db.Model, UserMixin):
     datum_uit_dienst = db.Column(db.Date, nullable=True)
     
     # Relaties met expliciete foreign_keys
-    geregistreerde_casussen = db.relationship(
-        'Casus',
-        foreign_keys='Casus.geregistreerd_door',
-        backref='geregistreerd_door_werknemer',
-        lazy=True
-    )
-    casushouder_casussen = db.relationship(
-        'Casus',
-        foreign_keys='Casus.casushouder_id',
-        backref='casushouder_werknemer',
-        lazy=True
-    )
-    tweede_casushouder_casussen = db.relationship(
-        'Casus',
-        foreign_keys='Casus.tweede_casushouder_id',
-        backref='tweede_casushouder_werknemer',
-        lazy=True
-    )
-    interne_inzet_werknemer = db.relationship(
-        'InterneInzet',
-        foreign_keys='InterneInzet.werknemer_id',
-        backref='interne_inzet_werknemer',
-        lazy=True
-    )
+    # geregistreerde_casussen = db.relationship(
+    #     'Casus',
+    #     foreign_keys='Casus.geregistreerd_door_id',
+    #     backref='geregistreerd_door_werknemer',
+    #     lazy=True
+    # )
+    # casushouder_casussen = db.relationship(
+    #     'Casus',
+    #     foreign_keys='Casus.casushouder_id',
+    #     backref='casushouder_werknemer',
+    #     lazy=True
+    # )
+    # tweede_casushouder_casussen = db.relationship(
+    #     'Casus',
+    #     foreign_keys='Casus.tweede_casushouder_id',
+    #     backref='tweede_casushouder_werknemer',
+    #     lazy=True
+    # )
+    # interne_inzet_werknemer = db.relationship(
+    #     'InterneInzet',
+    #     foreign_keys='InterneInzet.werknemer_id',
+    #     backref='interne_inzet_werknemer',
+    #     lazy=True
+    # )
     
     password_hash = db.Column(db.String(128), nullable=False)
 
@@ -74,7 +74,7 @@ class Team(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     naam = db.Column(db.String(100), unique=True, nullable=False)
     gebied_id = db.Column(db.Integer, db.ForeignKey('gebied.id', ondelete="SET NULL"), nullable=True)
-    casussen = db.relationship('Casus', backref='team', lazy=True)
+    # casussen = db.relationship('Casus', backref='team', lazy=True)
 
 class Frequentie(db.Model):
     __tablename__ = 'frequentie' 
@@ -129,7 +129,7 @@ class Casus(db.Model):
     registratiedatum = db.Column(db.Date, default=datetime.utcnow)
     casus_naam = db.Column(db.String(255), nullable=True)  # Casusnaam optioneel
     einde_wettelijke_termijn = db.Column(db.Date, nullable=True)
-    geregistreerd_door = db.Column(db.Integer, db.ForeignKey('werknemer.id'), nullable=True)
+    geregistreerd_door_id = db.Column(db.Integer, db.ForeignKey('werknemer.id'), nullable=True)  # Unieke naam
     casussoort_id = db.Column(db.Integer, db.ForeignKey('casussoort.id'), nullable=True)
     status_id = db.Column(db.Integer, db.ForeignKey('status.id'), nullable=False)
     inwoner_id = db.Column(db.Integer, db.ForeignKey('inwoner.id'), nullable=False)
@@ -137,24 +137,28 @@ class Casus(db.Model):
     casushouder_id = db.Column(db.Integer, db.ForeignKey('werknemer.id'), nullable=True)
     tweede_casushouder_id = db.Column(db.Integer, db.ForeignKey('werknemer.id'), nullable=True)
     team_id = db.Column(db.Integer, db.ForeignKey('team.id'), nullable=False)
-    soort = db.relationship('CasusSoort', backref='casussen', lazy=True)    
-    interne_inzet = db.relationship('InterneInzet', backref='casus', lazy=True)
     toelichting = db.Column(db.Text, nullable=True)
 
-# class Casus(db.Model):
-#     __tablename__ = 'casus' 
-#     id = db.Column(db.Integer, primary_key=True)
-#     registratiedatum = db.Column(db.Date, default=datetime.utcnow)
-#     casus_naam = db.Column(db.String(80), nullable=False)
-#     einde_wettelijke_termijn = db.Column(db.Date, nullable=True)
-#     geregistreerd_door = db.Column(db.Integer, db.ForeignKey('werknemer.id'), nullable=True)
-#     casussoort_id = db.Column(db.Integer, db.ForeignKey('casussoort.id'), nullable=True)  # Correcte verwijzing
-#     status_id = db.Column(db.Integer, db.ForeignKey('status.id'), nullable=False)
-#     inwoner_id = db.Column(db.Integer, db.ForeignKey('inwoner.id'), nullable=False)
-#     meldersoort_id = db.Column(db.Integer, db.ForeignKey('meldersoort.id'), nullable=False)
-#     casushouder_id = db.Column(db.Integer, db.ForeignKey('werknemer.id'), nullable=True)
-#     tweede_casushouder_id = db.Column(db.Integer, db.ForeignKey('werknemer.id'), nullable=True)
-#     team_id = db.Column(db.Integer, db.ForeignKey('team.id'), nullable=False)
-#     soort = db.relationship('CasusSoort', backref='casussen', lazy=True)
-#     interne_inzet = db.relationship('InterneInzet', backref='casus', lazy=True)
-#     toelichting = db.Column(db.Text, nullable=True)
+    # Relaties met unieke backref-namen
+    geregistreerd_door = db.relationship(
+        'Werknemer',
+        foreign_keys=[geregistreerd_door_id],
+        backref=db.backref('geregistreerde_casussen', lazy=True)  # Unieke naam
+    )
+    casushouder = db.relationship(
+        'Werknemer',
+        foreign_keys=[casushouder_id],
+        backref=db.backref('hoofdcasussen', lazy=True)  # Unieke naam
+    )
+    tweede_casushouder = db.relationship(
+        'Werknemer',
+        foreign_keys=[tweede_casushouder_id],
+        backref=db.backref('ondersteunende_casussen', lazy=True)  # Unieke naam
+    )
+    soort = db.relationship('CasusSoort', backref='casussen', lazy=True)
+    status = db.relationship('Status', backref='status', lazy=True)
+    inwoner = db.relationship('Inwoner', backref='inwoner', lazy=True)
+    meldersoort = db.relationship('MelderSoort', backref='meldersoort', lazy=True)
+    interne_inzet = db.relationship('InterneInzet', backref='casus', lazy=True)
+    team = db.relationship('Team', backref='team', lazy=True)
+
