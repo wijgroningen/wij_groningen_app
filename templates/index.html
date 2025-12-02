@@ -54,8 +54,8 @@
                 <select name="casussoort" id="casussoort">
                     <option value="">--Alle soorten--</option>
                     {% for soort in casussoorten %}
-                        <option value="{{ soort }}" {% if request.args.get('casussoort') == soort %}selected{% endif %}>
-                            {{ soort }}
+                        <option value="{{ soort.id }}" {% if request.args.get('casussoort') == soort %}selected{% endif %}>
+                            {{ soort.naam }}
                         </option>
                     {% endfor %}
                 </select>

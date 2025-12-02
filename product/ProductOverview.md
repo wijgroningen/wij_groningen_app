@@ -1,3 +1,17 @@
+Hierin komt het “wat en waarom” van de applicatie:
+
+doel
+
+doelgroep
+
+context
+
+high-level functionaliteit
+
+systeemgrenzen
+
+****
+
 # Sociaal domein applicatie
 Tbv WMO, Jeugdwet, Basis jeugdhulp, Omgevings gerichte aanpak en wellicht meerdere toepassingen
 
